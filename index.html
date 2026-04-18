@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>朝の業務 タブオープナー</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  h1 { font-size: 28px; margin-bottom: 8px; color: #1e3c72; }
+  .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
+  .open-all {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(238, 90, 82, 0.4);
+    transition: transform 0.15s;
+  }
+  .open-all:hover { transform: translateY(-2px); }
+  .notice {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #0d47a1;
+    line-height: 1.7;
+  }
+  .notice strong { color: #1565c0; }
+  .status {
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .status.show { display: block; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .link-card {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    background: #f5f7fa;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #333;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .link-card:hover {
+    background: #e8f0fe;
+    border-color: #2a5298;
+    transform: translateX(4px);
+  }
+  .icon { font-size: 24px; margin-right: 12px; }
+  .label { font-weight: 600; font-size: 15px; }
+  footer { margin-top: 24px; text-align: center; color: #999; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🌅 朝の業務 タブオープナー</h1>
+  <p class="subtitle">ボタンを押すと、業務に必要なサイトを一括で開きます</p>
+
+  <button class="open-all" onclick="openAll()">🚀 すべてのタブを開く（12サイト）</button>
+
+  <div id="status" class="status">✅ すべてのタブを開きました</div>
+
+  <div class="notice">
+    <strong>💡 初回だけポップアップ許可の設定が必要です：</strong><br>
+    <strong>Chrome / Edge：</strong>ボタンを押した後、アドレスバー右端に🚫マークが出ます → クリック →「このサイトでは常に許可する」→ もう一度ボタンを押す<br>
+    <strong>Safari（Mac）：</strong>Safari → 設定 → Webサイト → ポップアップウインドウ → このファイルを「許可」<br>
+    <strong>設定が面倒な場合：</strong>下のカードを個別にクリックしてください（常に開きます）
+  </div>
+
+  <div class="grid">
+    <a class="link-card bulk" href="https://weather.yahoo.co.jp/weather/chart/" target="_blank" rel="noopener"><span class="icon">🗾</span><span class="label">天気図</span></a>
+    <a class="link-card bulk" href="https://weather.yahoo.co.jp/weather/jp/13/4430/13401.html" target="_blank" rel="noopener"><span class="icon">🌤️</span><span class="label">八丈島の天気</span></a>
+    <a class="link-card bulk" href="https://weather.yahoo.co.jp/weather/zoomradar/" target="_blank" rel="noopener"><span class="icon">🌧️</span><span class="label">雨雲ズームレーダー</span></a>
+    <a class="link-card bulk" href="https://www.surf-life.blue/weather/tide_level/%E5%85%AB%E4%B8%88%E5%B3%B6%EF%BC%88%E5%85%AB%E9%87%8D%E6%A0%B9%EF%BC%89" target="_blank" rel="noopener"><span class="icon">🌙</span><span class="label">潮汐表（八重根）</span></a>
+    <a class="link-card bulk" href="https://typhoon.yahoo.co.jp/weather/jp/typhoon/" target="_blank" rel="noopener"><span class="icon">🌀</span><span class="label">台風情報</span></a>
+    <a class="link-card bulk" href="https://www.imocwx.com/cwm.php?Area=0&Time=" target="_blank" rel="noopener"><span class="icon">🌊</span><span class="label">波浪予想</span></a>
+    <a class="link-card bulk" href="https://www.windy.com/?33.225,141.663,7,p:cities" target="_blank" rel="noopener"><span class="icon">💨</span><span class="label">風（Windy）</span></a>
+    <a class="link-card bulk" href="https://hachijo.info/info/?page_id=24741" target="_blank" rel="noopener"><span class="icon">📹</span><span class="label">八丈島ライブカメラ</span></a>
+    <a class="link-card bulk" href="https://sui-kanagawa.jp/Kaikyozu/KantoTokai/" target="_blank" rel="noopener"><span class="icon">🐟</span><span class="label">黒潮経路図</span></a>
+    <a class="link-card bulk" href="https://www.ana.co.jp/" target="_blank" rel="noopener"><span class="icon">✈️</span><span class="label">ANA</span></a>
+    <a class="link-card bulk" href="https://www.flightradar24.com/33.33,139.59/10" target="_blank" rel="noopener"><span class="icon">🛩️</span><span class="label">フライトレーダー</span></a>
+    <a class="link-card bulk" href="https://x.com/hachijomarine?s=21&t=fYQYKxUV276b-9W2f2q0PQ" target="_blank" rel="noopener"><span class="icon">⛴️</span><span class="label">東海汽船（X）</span></a>
+  </div>
+
+  <footer>個別に開きたい場合は上のカードをクリック</footer>
+</div>
+
+<script>
+// ユーザー操作のイベント内で同期的に link.click() を呼ぶことで、
+// window.open() よりもポップアップブロックに引っかかりにくくする
+function openAll() {
+  const links = document.querySelectorAll('a.bulk');
+  links.forEach((link) => link.click());
+  const status = document.getElementById('status');
+  status.classList.add('show');
+  status.textContent = `✅ ${links.length}件のタブを開きました。開かなかった場合はブラウザのポップアップ許可を確認してください。`;
+}
+</script>
+</body>
+</html>
