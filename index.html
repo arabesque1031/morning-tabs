@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>朝の業務 タブオープナー</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>タブオープナー</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -13,7 +14,7 @@
     color: #333;
   }
   .container {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
     background: #fff;
     border-radius: 16px;
@@ -22,22 +23,24 @@
   }
   h1 { font-size: 28px; margin-bottom: 8px; color: #1e3c72; }
   .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
-  .open-all {
+
+  .open-all-master {
     display: block;
     width: 100%;
-    padding: 20px;
-    font-size: 18px;
+    padding: 18px;
+    font-size: 17px;
     font-weight: bold;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
     color: white;
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    margin-bottom: 16px;
-    box-shadow: 0 4px 12px rgba(238, 90, 82, 0.4);
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4);
     transition: transform 0.15s;
   }
-  .open-all:hover { transform: translateY(-2px); }
+  .open-all-master:hover { transform: translateY(-2px); }
+
   .notice {
     background: #e3f2fd;
     border-left: 4px solid #2196f3;
@@ -49,6 +52,7 @@
     line-height: 1.7;
   }
   .notice strong { color: #1565c0; }
+
   .status {
     padding: 12px;
     margin-bottom: 16px;
@@ -60,75 +64,182 @@
     border: 1px solid #c3e6cb;
   }
   .status.show { display: block; }
+
+  .genre {
+    margin-bottom: 28px;
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid;
+  }
+  .genre.weather  { background: #f0f8ff; border-color: #4a90e2; }
+  .genre.traffic  { background: #fff8e7; border-color: #f5a623; }
+  .genre.other    { background: #f5f0ff; border-color: #9b59b6; }
+  .genre.diving   { background: #e8f8f0; border-color: #27ae60; }
+
+  .genre-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .genre-title {
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .genre.weather .genre-title  { color: #2a5298; }
+  .genre.traffic .genre-title  { color: #c87f00; }
+  .genre.other   .genre-title  { color: #6c3a8e; }
+  .genre.diving  .genre-title  { color: #1e7e4a; }
+
+  .open-genre {
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+  }
+  .open-genre:hover { transform: translateY(-1px); opacity: 0.9; }
+  .genre.weather .open-genre { background: #4a90e2; }
+  .genre.traffic .open-genre { background: #f5a623; }
+  .genre.other   .open-genre { background: #9b59b6; }
+  .genre.diving  .open-genre { background: #27ae60; }
+
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
   }
   .link-card {
     display: flex;
     align-items: center;
-    padding: 14px 16px;
-    background: #f5f7fa;
-    border-radius: 10px;
+    padding: 12px 14px;
+    background: #fff;
+    border-radius: 8px;
     text-decoration: none;
     color: #333;
-    border: 2px solid transparent;
+    border: 1px solid #e0e0e0;
     transition: all 0.2s;
   }
   .link-card:hover {
-    background: #e8f0fe;
+    background: #f5f7fa;
     border-color: #2a5298;
-    transform: translateX(4px);
+    transform: translateX(3px);
   }
-  .icon { font-size: 24px; margin-right: 12px; }
-  .label { font-weight: 600; font-size: 15px; }
+  .icon { font-size: 22px; margin-right: 10px; }
+  .label { font-weight: 600; font-size: 14px; }
+
   footer { margin-top: 24px; text-align: center; color: #999; font-size: 12px; }
+
+  @media (max-width: 600px) {
+    .container { padding: 20px; }
+    h1 { font-size: 22px; }
+  }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>🌅 朝の業務 タブオープナー</h1>
-  <p class="subtitle">ボタンを押すと、業務に必要なサイトを一括で開きます</p>
+  <h1>🌅 タブオープナー</h1>
+  <p class="subtitle">ジャンル別ボタンで必要なサイトをまとめて開きます</p>
 
-  <button class="open-all" onclick="openAll()">🚀 すべてのタブを開く（12サイト）</button>
+  <button class="open-all-master" onclick="openGroup('all')">🚀 すべて一括で開く</button>
 
-  <div id="status" class="status">✅ すべてのタブを開きました</div>
+  <div id="status" class="status"></div>
 
   <div class="notice">
-    <strong>💡 初回だけポップアップ許可の設定が必要です：</strong><br>
-    <strong>Chrome / Edge：</strong>ボタンを押した後、アドレスバー右端に🚫マークが出ます → クリック →「このサイトでは常に許可する」→ もう一度ボタンを押す<br>
-    <strong>Safari（Mac）：</strong>Safari → 設定 → Webサイト → ポップアップウインドウ → このファイルを「許可」<br>
-    <strong>設定が面倒な場合：</strong>下のカードを個別にクリックしてください（常に開きます）
+    <strong>💡 初回だけポップアップ許可の設定が必要です:</strong><br>
+    <strong>Chrome / Edge:</strong>ボタンを押した後、アドレスバー右端に🚫マークが出ます → クリック →「このサイトでは常に許可する」→ もう一度ボタンを押す<br>
+    <strong>Safari (Mac):</strong>Safari → 設定 → Webサイト → ポップアップウインドウ → このファイルを「許可」<br>
+    <strong>設定が面倒な場合:</strong>下のカードを個別にクリックしてください (常に開きます)
   </div>
 
-  <div class="grid">
-    <a class="link-card bulk" href="https://weather.yahoo.co.jp/weather/chart/" target="_blank" rel="noopener"><span class="icon">🗾</span><span class="label">天気図</span></a>
-    <a class="link-card bulk" href="https://weather.yahoo.co.jp/weather/jp/13/4430/13401.html" target="_blank" rel="noopener"><span class="icon">🌤️</span><span class="label">八丈島の天気</span></a>
-    <a class="link-card bulk" href="https://weather.yahoo.co.jp/weather/zoomradar/" target="_blank" rel="noopener"><span class="icon">🌧️</span><span class="label">雨雲ズームレーダー</span></a>
-    <a class="link-card bulk" href="https://www.surf-life.blue/weather/tide_level/%E5%85%AB%E4%B8%88%E5%B3%B6%EF%BC%88%E5%85%AB%E9%87%8D%E6%A0%B9%EF%BC%89" target="_blank" rel="noopener"><span class="icon">🌙</span><span class="label">潮汐表（八重根）</span></a>
-    <a class="link-card bulk" href="https://typhoon.yahoo.co.jp/weather/jp/typhoon/" target="_blank" rel="noopener"><span class="icon">🌀</span><span class="label">台風情報</span></a>
-    <a class="link-card bulk" href="https://www.imocwx.com/cwm.php?Area=0&Time=" target="_blank" rel="noopener"><span class="icon">🌊</span><span class="label">波浪予想</span></a>
-    <a class="link-card bulk" href="https://www.windy.com/?33.225,141.663,7,p:cities" target="_blank" rel="noopener"><span class="icon">💨</span><span class="label">風（Windy）</span></a>
-    <a class="link-card bulk" href="https://hachijo.info/info/?page_id=24741" target="_blank" rel="noopener"><span class="icon">📹</span><span class="label">八丈島ライブカメラ</span></a>
-    <a class="link-card bulk" href="https://sui-kanagawa.jp/Kaikyozu/KantoTokai/" target="_blank" rel="noopener"><span class="icon">🐟</span><span class="label">黒潮経路図</span></a>
-    <a class="link-card bulk" href="https://www.ana.co.jp/" target="_blank" rel="noopener"><span class="icon">✈️</span><span class="label">ANA</span></a>
-    <a class="link-card bulk" href="https://www.flightradar24.com/33.33,139.59/10" target="_blank" rel="noopener"><span class="icon">🛩️</span><span class="label">フライトレーダー</span></a>
-    <a class="link-card bulk" href="https://x.com/hachijomarine?s=21&t=fYQYKxUV276b-9W2f2q0PQ" target="_blank" rel="noopener"><span class="icon">⛴️</span><span class="label">東海汽船（X）</span></a>
+  <!-- ジャンル①: 天候チェック -->
+  <div class="genre weather">
+    <div class="genre-header">
+      <div class="genre-title">🌤️ ① 天候チェック</div>
+      <button class="open-genre" onclick="openGroup('weather')">このジャンルを開く</button>
+    </div>
+    <div class="grid">
+      <a class="link-card" data-group="weather" href="https://weather.yahoo.co.jp/weather/chart/" target="_blank" rel="noopener"><span class="icon">🗾</span><span class="label">天気図</span></a>
+      <a class="link-card" data-group="weather" href="https://weather.yahoo.co.jp/weather/jp/13/4430/13401.html" target="_blank" rel="noopener"><span class="icon">🌤️</span><span class="label">八丈島の天気</span></a>
+      <a class="link-card" data-group="weather" href="https://weather.yahoo.co.jp/weather/zoomradar/" target="_blank" rel="noopener"><span class="icon">🌧️</span><span class="label">雨雲ズームレーダー</span></a>
+      <a class="link-card" data-group="weather" href="https://www.surf-life.blue/weather/tide_level/%E5%85%AB%E4%B8%88%E5%B3%B6%EF%BC%88%E5%85%AB%E9%87%8D%E6%A0%B9%EF%BC%89" target="_blank" rel="noopener"><span class="icon">🌙</span><span class="label">潮汐表 (八重根)</span></a>
+      <a class="link-card" data-group="weather" href="https://typhoon.yahoo.co.jp/weather/jp/typhoon/" target="_blank" rel="noopener"><span class="icon">🌀</span><span class="label">台風情報</span></a>
+      <a class="link-card" data-group="weather" href="https://www.imocwx.com/cwm.php?Area=0&Time=" target="_blank" rel="noopener"><span class="icon">🌊</span><span class="label">波浪予想</span></a>
+      <a class="link-card" data-group="weather" href="https://www.windy.com/?33.225,141.663,7,p:cities" target="_blank" rel="noopener"><span class="icon">💨</span><span class="label">風 (Windy)</span></a>
+      <a class="link-card" data-group="weather" href="https://hachijo.info/info/?page_id=24741" target="_blank" rel="noopener"><span class="icon">📹</span><span class="label">八丈島ライブカメラ</span></a>
+      <a class="link-card" data-group="weather" href="https://sui-kanagawa.jp/Kaikyozu/KantoTokai/" target="_blank" rel="noopener"><span class="icon">🐟</span><span class="label">黒潮経路図</span></a>
+    </div>
   </div>
 
-  <footer>個別に開きたい場合は上のカードをクリック</footer>
+  <!-- ジャンル②: 交通情報 -->
+  <div class="genre traffic">
+    <div class="genre-header">
+      <div class="genre-title">✈️ ② 交通情報</div>
+      <button class="open-genre" onclick="openGroup('traffic')">このジャンルを開く</button>
+    </div>
+    <div class="grid">
+      <a class="link-card" data-group="traffic" href="https://www.ana.co.jp/" target="_blank" rel="noopener"><span class="icon">✈️</span><span class="label">ANA</span></a>
+      <a class="link-card" data-group="traffic" href="https://www.flightradar24.com/33.33,139.59/10" target="_blank" rel="noopener"><span class="icon">🛩️</span><span class="label">フライトレーダー</span></a>
+      <a class="link-card" data-group="traffic" href="https://x.com/hachijomarine?s=21&t=fYQYKxUV276b-9W2f2q0PQ" target="_blank" rel="noopener"><span class="icon">⛴️</span><span class="label">東海汽船 (X)</span></a>
+      <a class="link-card" data-group="traffic" href="https://x.com/AI64742613" target="_blank" rel="noopener"><span class="icon">🚢</span><span class="label">大島国際海洋 (X)</span></a>
+    </div>
+  </div>
+
+  <!-- ジャンル③: その他 -->
+  <div class="genre other">
+    <div class="genre-header">
+      <div class="genre-title">📌 ③ その他</div>
+      <button class="open-genre" onclick="openGroup('other')">このジャンルを開く</button>
+    </div>
+    <div class="grid">
+      <a class="link-card" data-group="other" href="https://app.okaban.work/" target="_blank" rel="noopener"><span class="icon">📋</span><span class="label">okaban</span></a>
+    </div>
+  </div>
+
+  <!-- ジャンル④: ダイビングショップブログ -->
+  <div class="genre diving">
+    <div class="genre-header">
+      <div class="genre-title">🤿 ④ ダイビングショップブログ</div>
+      <button class="open-genre" onclick="openGroup('diving')">このジャンルを開く</button>
+    </div>
+    <div class="grid">
+      <a class="link-card" data-group="diving" href="https://archelon-8jo.com/?cat=3" target="_blank" rel="noopener"><span class="icon">🐢</span><span class="label">アルケロン</span></a>
+      <a class="link-card" data-group="diving" href="http://regulusdiving.jp/today/" target="_blank" rel="noopener"><span class="icon">⭐</span><span class="label">レグルス</span></a>
+      <a class="link-card" data-group="diving" href="https://divingshop-kazamidori.com/category/%e6%9c%ac%e6%97%a5%e3%81%ae%e6%b5%b7%e6%b3%81/" target="_blank" rel="noopener"><span class="icon">🎏</span><span class="label">かざみどり</span></a>
+      <a class="link-card" data-group="diving" href="https://concolor.exblog.jp/" target="_blank" rel="noopener"><span class="icon">🐠</span><span class="label">コンカラー</span></a>
+    </div>
+  </div>
+
+  <footer>個別に開きたい場合は各カードをクリック</footer>
 </div>
 
 <script>
-// ユーザー操作のイベント内で同期的に link.click() を呼ぶことで、
-// window.open() よりもポップアップブロックに引っかかりにくくする
-function openAll() {
-  const links = document.querySelectorAll('a.bulk');
+function openGroup(group) {
+  let links;
+  if (group === 'all') {
+    links = document.querySelectorAll('a.link-card');
+  } else {
+    links = document.querySelectorAll(`a.link-card[data-group="${group}"]`);
+  }
   links.forEach((link) => link.click());
   const status = document.getElementById('status');
   status.classList.add('show');
-  status.textContent = `✅ ${links.length}件のタブを開きました。開かなかった場合はブラウザのポップアップ許可を確認してください。`;
+  const groupLabel = {
+    all: 'すべて',
+    weather: '天候チェック',
+    traffic: '交通情報',
+    other: 'その他',
+    diving: 'ダイビングショップブログ'
+  }[group] || group;
+  status.textContent = `✅ 「${groupLabel}」${links.length}件のタブを開きました。開かなかった場合はブラウザのポップアップ許可を確認してください。`;
 }
 </script>
 </body>
